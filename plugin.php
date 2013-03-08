@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: WP Basic Auth
+Plugin Name: WP BASIC Auth
 Plugin URI: https://github.com/wokamoto/wp-basic-auth
 Description: Enabling this plugin allows you to set up Basic authentication on your site using your WordPress's user name and password. 
 Author: wokamoto
