@@ -4,7 +4,7 @@ Plugin Name: WP BASIC Auth
 Plugin URI: https://github.com/wokamoto/wp-basic-auth
 Description: Enabling this plugin allows you to set up Basic authentication on your site using your WordPress's user name and password. 
 Author: wokamoto
-Version: 1.0.0
+Version: 1.1.0
 Author URI: http://dogmap.jp/
 
 License:
@@ -27,20 +27,64 @@ License:
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-function basic_auth(){
-    nocache_headers();
-    if ( is_user_logged_in() )
-        return;
+class wp_basic_auth {
+	const HTACCES_REWRITE_RULE = '
+# BEGIN WP BASIC Auth
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule ^(.*) – [E=HTTP_AUTHORIZATION:%1]
+</IfModule>
+# END WP BASIC Auth
+';
 
-    $user = isset($_SERVER["PHP_AUTH_USER"]) ? $_SERVER["PHP_AUTH_USER"] : '';
-    $pwd  = isset($_SERVER["PHP_AUTH_PW"])   ? $_SERVER["PHP_AUTH_PW"]   : '';
-    if ( !is_wp_error(wp_authenticate($user, $pwd)) ) {
-        return;
-    }
+	function __construct(){
+		add_action('template_redirect',array(&$this, 'basic_auth'));
 
-    header('WWW-Authenticate: Basic realm="Please Enter Your Password"');
-    header('HTTP/1.0 401 Unauthorized');
-    echo 'Authorization Required';
-    die();
+		register_activation_hook(__FILE__, array(&$this, 'activate'));
+		register_deactivation_hook(__FILE__, array(&$this, 'deactivate'));
+	}
+
+	public function activate(){
+		if (!file_exists(ABSPATH.'.htaccess'))
+			return;
+		$htaccess = file_get_contents(ABSPATH.'.htaccess');
+		if (strpos($htaccess, self::HTACCES_REWRITE_RULE) !== false)
+			return;
+		file_put_contents(ABSPATH.'.htaccess', $htaccess . self::HTACCES_REWRITE_RULE);
+	}
+
+	public function deactivate(){
+		if (!file_exists(ABSPATH.'.htaccess'))
+			return;
+		$htaccess = file_get_contents(ABSPATH.'.htaccess');
+		if (strpos($htaccess, self::HTACCES_REWRITE_RULE) === false)
+			return;
+		file_put_contents(ABSPATH.'.htaccess', str_replace(self::HTACCES_REWRITE_RULE, '', $htaccess));
+	}
+
+	public function basic_auth(){
+	    nocache_headers();
+	    if ( is_user_logged_in() )
+	        return;
+
+	    $usr = isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '';
+	    $pwd = isset($_SERVER['PHP_AUTH_PW'])   ? $_SERVER['PHP_AUTH_PW']   : '';
+		if (empty($usr) && empty($pwd) && isset($_SERVER['HTTP_AUTHORIZATION'])) {
+			list($type, $auth) = explode(' ', $_SERVER['HTTP_AUTHORIZATION']);
+			if (strtolower($type) === 'basic') {
+				list($usr, $pwd) = explode(':', base64_decode($auth));
+			}
+		}
+
+	    if ( !is_wp_error(wp_authenticate($usr, $pwd)) ) {
+	        return;
+	    }
+
+	    header('WWW-Authenticate: Basic realm="Please Enter Your Password"');
+	    header('HTTP/1.1 401 Unauthorized');
+	    echo 'Authorization Required';
+	    die();
+	}
 }
-add_action('template_redirect','basic_auth');
+new wp_basic_auth();
