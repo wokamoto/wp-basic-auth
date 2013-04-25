@@ -51,7 +51,7 @@ RewriteRule ^(.*) – [E=HTTP_AUTHORIZATION:%1]
 		$htaccess = file_get_contents(ABSPATH.'.htaccess');
 		if (strpos($htaccess, self::HTACCES_REWRITE_RULE) !== false)
 			return;
-		file_put_contents(ABSPATH.'.htaccess', $htaccess . self::HTACCES_REWRITE_RULE);
+		file_put_contents(ABSPATH.'.htaccess', self::HTACCES_REWRITE_RULE . $htaccess);
 	}
 
 	public function deactivate(){
