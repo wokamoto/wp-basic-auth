@@ -64,12 +64,12 @@ RewriteRule ^(.*) – [E=HTTP_AUTHORIZATION:%1]
 	}
 
 	public function basic_auth(){
-	    nocache_headers();
-	    if ( is_user_logged_in() )
-	        return;
+		nocache_headers();
+		if ( is_user_logged_in() )
+			return;
 
-	    $usr = isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '';
-	    $pwd = isset($_SERVER['PHP_AUTH_PW'])   ? $_SERVER['PHP_AUTH_PW']   : '';
+		$usr = isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '';
+		$pwd = isset($_SERVER['PHP_AUTH_PW'])   ? $_SERVER['PHP_AUTH_PW']   : '';
 		if (empty($usr) && empty($pwd) && isset($_SERVER['HTTP_AUTHORIZATION'])) {
 			list($type, $auth) = explode(' ', $_SERVER['HTTP_AUTHORIZATION']);
 			if (strtolower($type) === 'basic') {
@@ -77,14 +77,13 @@ RewriteRule ^(.*) – [E=HTTP_AUTHORIZATION:%1]
 			}
 		}
 
-	    if ( !is_wp_error(wp_authenticate($usr, $pwd)) ) {
-	        return;
-	    }
+		if ( !is_wp_error(wp_authenticate($usr, $pwd)) )
+			return;
 
-	    header('WWW-Authenticate: Basic realm="Please Enter Your Password"');
-	    header('HTTP/1.1 401 Unauthorized');
-	    echo 'Authorization Required';
-	    die();
+		header('WWW-Authenticate: Basic realm="Please Enter Your Password"');
+		header('HTTP/1.1 401 Unauthorized');
+		echo 'Authorization Required';
+		die();
 	}
 }
 new wp_basic_auth();
