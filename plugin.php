@@ -33,7 +33,7 @@ class wp_basic_auth {
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteCond %{HTTP:Authorization} ^(.*)
-RewriteRule ^(.*) – [E=HTTP_AUTHORIZATION:%1]
+RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
 </IfModule>
 # END WP BASIC Auth
 ';
