@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=9S8AJ
 Tags: BASIC Auth, Auth
 Requires at least: 3.0
 Tested up to: 3.5.1
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 
 Enabling this plugin allows you to set up Basic authentication on your site using your WordPress's user name and password.
 
@@ -12,6 +12,8 @@ Enabling this plugin allows you to set up Basic authentication on your site usin
 
 Enabling this plugin allows you to set up Basic authentication on your site using your WordPress's user name and password.
 It is very useful for setting up Basic authentication temporarily to your development WordPress site and so on.
+
+This plugin banner image was created by [Arcted](http://arcted.jp/ "Arcted - Web Developer Portfolio"). Thank you, Arcted!
 
 == Installation ==
 
@@ -23,6 +25,9 @@ It is very useful for setting up Basic authentication temporarily to your develo
 none
 
 == Changelog == 
+
+**1.1.1 - July, 30, 2013**
+fix : Notice: Undefined offset error.
 
 **1.0.0 - March 8, 2013**  
 Initial release.
