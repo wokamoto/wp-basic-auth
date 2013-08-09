@@ -39,7 +39,7 @@ RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
 ';
 
 	function __construct(){
-		add_action('template_redirect',array(&$this, 'basic_auth'));
+		add_action('init', array(&$this, 'basic_auth'), 1);
 
 		register_activation_hook(__FILE__, array(&$this, 'activate'));
 		register_deactivation_hook(__FILE__, array(&$this, 'deactivate'));
