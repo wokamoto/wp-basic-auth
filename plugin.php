@@ -4,7 +4,7 @@ Plugin Name: WP BASIC Auth
 Plugin URI: https://github.com/wokamoto/wp-basic-auth
 Description: Enabling this plugin allows you to set up Basic authentication on your site using your WordPress's user name and password. 
 Author: wokamoto
-Version: 1.1.1
+Version: 1.1.2
 Author URI: http://dogmap.jp/
 
 License:
@@ -38,11 +38,15 @@ RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
 # END WP BASIC Auth
 ';
 
-	function __construct(){
-		add_action('init', array(&$this, 'basic_auth'), 1);
+	static $instance;
 
-		register_activation_hook(__FILE__, array(&$this, 'activate'));
-		register_deactivation_hook(__FILE__, array(&$this, 'deactivate'));
+	function __construct(){
+		self::$instance = $this;
+
+		add_action('template_redirect', array($this, 'basic_auth'), 1);
+
+		register_activation_hook(__FILE__, array($this, 'activate'));
+		register_deactivation_hook(__FILE__, array($this, 'deactivate'));
 	}
 
 	public function activate(){
