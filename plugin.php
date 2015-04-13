@@ -81,13 +81,17 @@ RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
 			}
 		}
 
-		if ( !is_wp_error(wp_authenticate($usr, $pwd)) )
+		$is_authenticated = wp_authenticate($usr, $pwd);
+
+		if ( !is_wp_error( $is_authenticated ) )
 			return;
 
 		header('WWW-Authenticate: Basic realm="Please Enter Your Password"');
 		header('HTTP/1.1 401 Unauthorized');
-		echo 'Authorization Required';
-		die();
+#		echo 'Authorization Required';
+#		die();
+		wp_die( 'You need to enter a Username and a Password if you want to see this website.', 'Authorization Required' );
+#		wp_die( $is_authenticated );
 	}
 }
 new wp_basic_auth();
