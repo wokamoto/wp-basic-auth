@@ -4,13 +4,13 @@ Plugin Name: WP BASIC Auth
 Plugin URI: https://github.com/wokamoto/wp-basic-auth
 Description: Enabling this plugin allows you to set up Basic authentication on your site using your WordPress's user name and password. 
 Author: wokamoto
-Version: 1.1.2
+Version: 1.1.3
 Author URI: http://dogmap.jp/
 
 License:
  Released under the GPL license
   http://www.gnu.org/copyleft/gpl.html
-  Copyright 2013 wokamoto (email : wokamoto1973@gmail.com)
+  Copyright 2013-2015 wokamoto (email : wokamoto1973@gmail.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -88,10 +88,7 @@ RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
 
 		header('WWW-Authenticate: Basic realm="Please Enter Your Password"');
 		header('HTTP/1.1 401 Unauthorized');
-#		echo 'Authorization Required';
-#		die();
 		wp_die( 'You need to enter a Username and a Password if you want to see this website.', 'Authorization Required' );
-#		wp_die( $is_authenticated );
 	}
 }
 new wp_basic_auth();
