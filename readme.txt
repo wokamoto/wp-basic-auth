@@ -3,8 +3,8 @@ Contributors: wokamoto, megumithemes
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=9S8AJCY7XB8F4&lc=JP&item_name=WordPress%20Plugins&item_number=wp%2dplugins&currency_code=JPY&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 Tags: BASIC Auth, Auth
 Requires at least: 3.0
-Tested up to: 4.1.1
-Stable tag: 1.1.3
+Tested up to: 6.1.1
+Stable tag: 1.1.4
 
 Enabling this plugin allows you to set up Basic authentication on your site using your WordPress's user name and password.
 
@@ -25,6 +25,10 @@ This plugin banner image was created by [Arcted](http://arcted.jp/ "Arcted - Web
 none
 
 == Changelog ==
+
+**1.1.4 - November, 22, 2022**
+
+Checked in WordPress 6.1.1
 
 **1.1.3 - March, 13, 2015**
 
